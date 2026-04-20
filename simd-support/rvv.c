@@ -24,8 +24,11 @@
 #if HAVE_RVV
 #include <riscv_vector.h>
 /* don't know how to autodetect RVV; assume it is present */
-  int X(have_simd_rvv)(int rs)
-  {
-       return __riscv_vsetvlmax_e64m1() == (rs / 64);
+  int X(have_simd_rvv)(int rs) {
+  #ifdef FFTW_SINGLE
+      return vsetvlmax_e32m1() == (rs / 32);
+  #else
+      return vsetvlmax_e64m1() == (rs / 64);
+  #endif
   }
 #endif
